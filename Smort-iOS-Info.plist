@@ -3,6 +3,6 @@
 <plist version="1.0">
 <dict>
 	<key>NSCalendarsWriteOnlyAccessUsageDescription</key>
-	<string></string>
+	<string>We need to write events to your calendar!</string>
 </dict>
 </plist>
