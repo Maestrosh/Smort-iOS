@@ -10,9 +10,22 @@
 		917B021A2E2B00CD00FC07F9 /* Smort iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Smort iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		917B023D2E2B011100FC07F9 /* Exceptions for "Smort iOS" folder in "Smort iOS" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				"Smort-iOS-Info.plist",
+			);
+			target = 917B02192E2B00CD00FC07F9 /* Smort iOS */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		917B021C2E2B00CD00FC07F9 /* Smort iOS */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				917B023D2E2B011100FC07F9 /* Exceptions for "Smort iOS" folder in "Smort iOS" target */,
+			);
 			path = "Smort iOS";
 			sourceTree = "<group>";
 		};
@@ -256,6 +269,7 @@
 				DEVELOPMENT_TEAM = 85T6M47345;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Smort-iOS-Info.plist";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -288,6 +302,7 @@
 				DEVELOPMENT_TEAM = 85T6M47345;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Smort-iOS-Info.plist";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
