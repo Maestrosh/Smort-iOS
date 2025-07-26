@@ -13,8 +13,8 @@ import EventKit
 
 struct ContentView: View {
     let model = SystemLanguageModel.default
-    let session = LanguageModelSession()
     let calendarService: CalendarService = CalendarService()
+    let session = LanguageModelSession(instructions: "You are an assistant that extracts events from casual text and organizes them into a calendar.")
     var body: some View {
         TabView {
             Tab("Home", systemImage: "house"){

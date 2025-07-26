@@ -4,5 +4,7 @@
 <dict>
 	<key>NSCalendarsWriteOnlyAccessUsageDescription</key>
 	<string>We need to write events to your calendar!</string>
+	<key>caled</key>
+	<string></string>
 </dict>
 </plist>

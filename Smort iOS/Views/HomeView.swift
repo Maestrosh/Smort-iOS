@@ -15,8 +15,9 @@ struct HomeView: View {
     let session: LanguageModelSession
     @State private var newItemName: String = ""
     @State private var isPresentingAddSheet = false
-    @State private var newItem: String = ""
-    @State private var input:String = ""
+    @State private var userMessage: String = ""
+    @AppStorage("Custom Insutrctions") private var customInstructions: String = ""
+
     var body: some View {
         NavigationView {
             Group {
@@ -54,7 +55,7 @@ struct HomeView: View {
                     }
                 }
             }
-            .navigationTitle("My List")
+            .navigationTitle("Smort")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
@@ -64,32 +65,31 @@ struct HomeView: View {
                     Button{
                         isPresentingAddSheet = true
                     } label: {
-                        Label("Add Item", systemImage: "plus")
+                        Label("Add", systemImage: "plus")
                     }
                 }
             }
             .sheet(isPresented: $isPresentingAddSheet) {
                 NavigationView {
                     Form {
-                            TextField("", text: $newItem, axis: .vertical).lineLimit(10,reservesSpace: true)
+                            TextField("", text: $userMessage, axis: .vertical).lineLimit(10,reservesSpace: true)
                     }
-                    .navigationTitle("ILYSM")
+                    .navigationTitle("Message to LLM")
                     .navigationBarTitleDisplayMode(.inline)
                     .toolbar {
                         ToolbarItem(placement: .cancellationAction) {
                             Button("Cancel") {
                                 isPresentingAddSheet = false
-                                newItem = ""
+                                userMessage = ""
                             }
                         }
                         ToolbarItem(placement: .confirmationAction) {
                             Button("Save") {
-                                input = newItem
-                                addItem(input: input)
+                                addItem(input: userMessage, customInstruction: customInstructions )
                                 isPresentingAddSheet = false
-                                newItem = ""
+                                userMessage = ""
                             }
-                            .disabled(newItem.trimmingCharacters(in: .whitespaces).isEmpty)
+                            .disabled(userMessage.trimmingCharacters(in: .whitespaces).isEmpty)
                         }
                     }
                 }.presentationDetents([.medium])
@@ -107,7 +107,7 @@ struct HomeView: View {
     private func detailView(for item: Item) -> some View {
         List {
             Text("Title: \(item.title)")
-            Text("Time: \(item.time.description)")
+            Text("Time: \(item.startTime.description)")
             Text("Location: \(item.location ?? "Not Specified")")
             Text("Notes: \(item.notes ?? "None")")
             Text("Recurs: \(item.hasRecurrenceRules.description)")
@@ -116,20 +116,27 @@ struct HomeView: View {
     }
 
 
-    private func addItem(input: String) {
+    private func addItem(input: String, customInstruction: String?) {
         Task {
             do {
-                let newEvent = try await session.respond(to: input, generating: Event.self).content
+                let newEvent = try await session.respond(to: "Bear in mind the following:\(customInstruction ?? "") casual text:\(input)", generating: Event.self).content
+                print (session.transcript)
                 withAnimation {
-                    let newItem = Item(
+                    
+                    //TODO: Some kind of notification to say it was added and is processing.
+                    
+                    let newEventItem = Item(
                         timestamp: Date(),
                         title: newEvent.title,
-                        time: newEvent.time,
+                        starttime: newEvent.start,
+                        endtime: newEvent.end,
                         location: newEvent.location,
                         notes: newEvent.notes,
                         url: newEvent.url
                     )
-                    modelContext.insert(newItem)
+                    modelContext.insert(newEventItem)
+                    
+                    // Every time something is added, it should also go to Calendar.
                 }
             } catch {
                 // Handle error — maybe show alert or log

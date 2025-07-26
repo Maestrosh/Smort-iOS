@@ -24,7 +24,7 @@ struct SettingsView: View {
                 // MARK: - Intelligence Section
                 Section(
                     header: Text("Custom Instructions"),
-                    footer: Text("Provide instructions to guide the AI. Always add a 15-minute buffer before meetings.")
+                    footer: Text("Provide instructions to guide the AI. Ex. Always add a 15-minute buffer before meetings.")
                 ) {
                     TextField("",text: $customInstructions, axis: .vertical).lineLimit(4, reservesSpace: true)
                 }
@@ -51,7 +51,13 @@ struct SettingsView: View {
                         case true:
                             Text("Calendar Access Granted")
                         case false:
-                            Text("Change Calendar Access Level to Write Only")
+                            Button{
+                                Task{
+                                    await calendarService.requestWriteAcessToCalendar()
+                                }
+                            } label: {
+                                    Text("Change Calendar Access Level to Write Only")
+                            }
                         }
                     }
                 }

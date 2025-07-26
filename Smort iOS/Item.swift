@@ -13,15 +13,17 @@ final class Item: Identifiable {
     var timestamp: Date
     var title: String
     var location: String?
-    var time: String
+    var startTime: String
+    var endTime: String?
     var notes: String?
     var url: String?
     var hasRecurrenceRules: Bool
     var isAllDay: Bool
-    init(timestamp: Date, title: String, time: String, location: String? = nil, notes: String? = nil, url: String? = nil, hasRecurrenceRules: Bool = false, isAllDay: Bool = false) {
+    init(timestamp: Date, title: String, starttime: String, endtime: String? = nil, location: String? = nil, notes: String? = nil, url: String? = nil, hasRecurrenceRules: Bool = false, isAllDay: Bool = false) {
         self.timestamp = timestamp
         self.title = title
-        self.time = time
+        self.startTime = starttime
+        self.endTime = endtime
         self.location = location
         self.notes = notes
         self.url = url

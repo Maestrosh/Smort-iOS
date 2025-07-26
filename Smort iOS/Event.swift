@@ -10,24 +10,28 @@ import Foundation
 
 @Generable
 struct Event {
-    @Guide(description: "A summary or title of the Event")
+    @Guide(description: "A short title or summary of the event")
     var title: String
 
-    @Guide(description: "A relevant URL for this event, if any")
+    @Guide(description: "An optional link with more information about the event")
     var url: String?
 
-    @Guide(description: "Must-knows or notes about the event")
+    @Guide(description: "Important details, notes, or context about the event")
     var notes: String?
 
-    @Guide(description: "Time(s) and day(s) of the event")
-    var time: String
+    @Guide(description: "When the event starts, expressed naturally by the user (e.g. 'next Wednesday at 5pm')")
+    var start: String
 
-    @Guide(description: "Where the event is exactly")
-    var location: String?
+    @Guide(description: "When the event ends. If unknown, respond with 'not specified'")
+    var end: String
 
-    @Guide(description: "Does the event repeat?")
+    @Guide(description: "Exact location or address of the event")
+    var location: String
+
+    @Guide(description: "True if the event repeats over time (e.g. weekly, monthly)")
     var hasRecurrenceRules: Bool
 
-    @Guide(description: "Is this an all-day event?")
+    @Guide(description: "True if the event lasts all day, with no specific start or end time")
     var isAllDay: Bool
 }
+
