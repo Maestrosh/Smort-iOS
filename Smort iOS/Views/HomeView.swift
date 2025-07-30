@@ -14,7 +14,7 @@ struct HomeView: View {
     @Query private var items: [Item]
     let session: LanguageModelSession
     @State private var newItemName: String = ""
-    @State private var isPresentingAddSheet = false
+    @State private var isPresentingAddSheet = true
     @State private var userMessage: String = ""
     @AppStorage("Custom Insutrctions") private var customInstructions: String = ""
 
@@ -107,11 +107,24 @@ struct HomeView: View {
     private func detailView(for item: Item) -> some View {
         List {
             Text("Title: \(item.title)")
-            Text("Time: \(item.startTime.description)")
-            Text("Location: \(item.location ?? "Not Specified")")
-            Text("Notes: \(item.notes ?? "None")")
-            Text("Recurs: \(item.hasRecurrenceRules.description)")
-            Text("All Day: \(item.isAllDay.description)")
+
+            Text("Time: \(item.startDate)")
+
+            if let location = item.location, !location.isEmpty {
+                Text("Location: \(location)")
+            }
+
+            if let notes = item.notes, !notes.isEmpty {
+                Text("Notes: \(notes)")
+            }
+
+            if item.isAllDay {
+                Text("All-day event")
+            }
+
+            if let url = item.url {
+                Link("Link", destination: url)
+            }
         }
     }
 
@@ -123,14 +136,15 @@ struct HomeView: View {
                 print (session.transcript)
                 withAnimation {
                     
-                    //TODO: Some kind of notification to say it was added and is processing.
+                    //TODO: Some kind of notification to say it was added and is processing. and also revise the generated content to get desired formats (e.g. for dates, "next wednesday" should be modofied to an exact date using NSdatadetector.)
+                    
                     
                     let newEventItem = Item(
                         timestamp: Date(),
                         title: newEvent.title,
-                        starttime: newEvent.start,
-                        endtime: newEvent.end,
                         location: newEvent.location,
+                        startDate: newEvent.start,
+                        endDate: newEvent.end,
                         notes: newEvent.notes,
                         url: newEvent.url
                     )
