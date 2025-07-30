@@ -14,9 +14,9 @@ import Observation
 struct SettingsView: View {
     
     let model: SystemLanguageModel
-    @Bindable var calendarService: CalendarService
     @AppStorage("Custom Insutrctions") private var customInstructions: String = ""
     @State private var granted: Bool = false
+    @State private var eventStore = EKEventStore()
     
     var body: some View {
         NavigationView {
@@ -34,30 +34,36 @@ struct SettingsView: View {
                     HStack {
                         switch model.availability {
                         case .available:
-                            Text("Model is Available and Ready to Use")
+                            Text("On device AI model is available and ready to use")
                         case .unavailable(.deviceNotEligible):
-                            Text("Device Not Eligible")
+                            Text("Device not eligible")
                         case .unavailable(.appleIntelligenceNotEnabled):
                             Text("Enable Apple Intelligence")
                         case .unavailable(.modelNotReady):
-                            Text("Model is Downloading...")
+                            Text("Model is downloading...")
                         case .unavailable(_):
                             Text("Error")
                                 .foregroundColor(.red)
                         }
                     }
                     HStack {
-                        switch calendarService.isAuthorized {
-                        case true:
-                            Text("Calendar Access Granted")
-                        case false:
-                            Button{
-                                Task{
-                                    await calendarService.requestWriteAcessToCalendar()
+                        switch EKEventStore.authorizationStatus(for: .event) {
+                        case .authorized, .fullAccess, .writeOnly:
+                            Text("Calendar can't wait to save events")
+                        case .notDetermined:
+                            Button("Allow saving to calendar") {
+                                Task {
+                                    try await EKEventStore().requestWriteOnlyAccessToEvents()
                                 }
-                            } label: {
-                                    Text("Change Calendar Access Level to Write Only")
                             }
+                        case .denied, .restricted:
+                            Button("Change calendar access level to Add Events Only") {
+                                if let settingsURL = URL(string: UIApplication.openSettingsURLString) {
+                                    UIApplication.shared.open(settingsURL)
+                                }
+                            }
+                        @unknown default:
+                            Text("Unknown calendar status. Check settings")
                         }
                     }
                 }
@@ -95,5 +101,5 @@ struct SettingsView: View {
 }
 
 #Preview {
-    SettingsView(model: SystemLanguageModel.default, calendarService: CalendarService())
+    SettingsView(model: SystemLanguageModel.default)
 }
