@@ -1,5 +1,5 @@
 //
-//  LearningApp.swift
+//  Smort.swift
 //  Learning
 //
 //  Created by Mehdi Shakibapour on 7/15/25.
@@ -9,9 +9,9 @@ import SwiftUI
 import SwiftData
 
 @main
-struct LearningApp: App {
+struct Smort: App {
     
-    // Shared Model Container Crap
+    // Shared Model Container
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
             Item.self,

@@ -13,15 +13,14 @@ import EventKit
 
 struct ContentView: View {
     let model = SystemLanguageModel.default
-    let calendarService: CalendarService = CalendarService()
-    let session = LanguageModelSession(instructions: "You are an assistant that extracts events from casual text and organizes them into a calendar.")
+    let session = LanguageModelSession(instructions: "You are a Calendar assistant that extracts events from user's texts and organizes them into a calendar.")
     var body: some View {
         TabView {
             Tab("Home", systemImage: "house"){
                 HomeView(session: session)
             }
             Tab("Settings", systemImage: "gearshape"){
-                SettingsView(model: model, calendarService: calendarService, )
+                SettingsView(model: model)
             }
             
         }.tabViewStyle(.automatic)
